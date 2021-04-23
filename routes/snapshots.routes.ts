@@ -32,6 +32,36 @@ app.get('/snapshots', (req: Request, res: Response) => {
 
 });
 
+//Obtener un snapshot por un dispositivo
+app.get('/snapshots/:deviceID', (req: Request, res: Response) => {
+    let deviceID = req.params.deviceID;
+
+    Snapshots.findAll({
+        include: [
+            {
+                model: Locations,
+            },
+            {
+                model: Devices,
+                include: [
+                    {
+                        model: Users,
+                    }
+                ],
+                attributes: {
+                    exclude: ['userId'],
+                }
+            },
+        ],
+        attributes: {
+            exclude: ['locationId', 'deviceId'],
+        },where:{deviceId: deviceID}
+    })
+        .then((data) => res.json({ ok: true, data })
+        ).catch((err) => res.status(400).json({ ok: false, err, }));
+
+});
+
 app.post('/snapshots', (req: Request, res: Response) => {
 
     const body = req.body;
