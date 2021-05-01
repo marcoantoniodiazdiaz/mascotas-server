@@ -13,7 +13,6 @@ export const createAssosiations = () => {
     Locations.hasOne(Snapshots);
     Snapshots.belongsTo(Locations);
 
-
     Devices.hasMany(Snapshots);
     Snapshots.belongsTo(Devices);
 

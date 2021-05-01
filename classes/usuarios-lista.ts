@@ -14,10 +14,11 @@ export class UsuariosLista {
         return usuario
     }
 
-    public actualizarNombre(id: string, username: string) {
+    public actualizarNombre(id: string, username: string, database: number) {
         for (let usuario of this.lista) {
             if (usuario.id === id) {
                 usuario.username = username;
+                usuario.database = database;
                 break;
             }
         }
@@ -38,5 +39,13 @@ export class UsuariosLista {
         const tempUsuario = this.getUsuario(id);
         this.lista = this.lista.filter(usuario => usuario.id !== id);
         return tempUsuario;
+    }
+
+    public verIdDeSocket(database: number) {
+        for (let usuario of this.lista) {
+            if (usuario.database === database) {
+                return usuario.id
+            }
+        }
     }
 }

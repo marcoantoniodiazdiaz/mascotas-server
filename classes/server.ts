@@ -3,13 +3,11 @@ import express from 'express';
 import { SERVER_PORT } from '../global/environment';
 import socketIO from 'socket.io';
 import http from 'http';
-// import sequelize from '../database/database';
 
 
 import * as socket from '../sockets/socket';
 import { createAssosiations } from '../database/assosiations';
 import sequelize from '../database/database';
-// import { createAssosiations } from '../database/assosiations';
 
 export default class Server {
 
