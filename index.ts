@@ -5,6 +5,7 @@ import users from './routes/users.routes';
 import devices from './routes/devices.routes';
 import snapshots from './routes/snapshots.routes';
 import locations from './routes/locations.routes';
+import test from './routes/tests.routes';
 // 
 import bodyParser from 'body-parser';
 import cors from 'cors';
@@ -28,11 +29,7 @@ server.app.use('/api', users);
 server.app.use('/api', devices);
 server.app.use('/api', snapshots);
 server.app.use('/api', locations);
-
-// Angular
-// server.app.get('*', (req, res, next) => {
-//     res.sendFile(path.resolve('public/index.html'));
-// });
+server.app.use('/api', test);
 
 server.start(() => {
     console.log(`✅  Server online in port ${server.port}`);

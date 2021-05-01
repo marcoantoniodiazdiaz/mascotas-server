@@ -16,11 +16,6 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@types/bcrypt": "^3.0.0",
-        "@types/jsonwebtoken": "^8.5.0",
-        "@types/mongoose": "^5.7.34",
-        "@types/nodemailer": "^6.4.0",
-        "@types/underscore": "^1.10.18",
         "axios": "^0.19.2",
         "bcrypt": "^5.0.0",
         "body-parser": "^1.18.3",
@@ -38,6 +33,11 @@
         "underscore": "^1.10.2"
     },
     "devDependencies": {
+        "@types/bcrypt": "^3.0.0",
+        "@types/jsonwebtoken": "^8.5.0",
+        "@types/mongoose": "^5.7.34",
+        "@types/nodemailer": "^6.4.0",
+        "@types/underscore": "^1.10.18",
         "@types/cors": "^2.8.4",
         "@types/express": "^4.16.0",
         "@types/socket.io": "^2.1.0"
