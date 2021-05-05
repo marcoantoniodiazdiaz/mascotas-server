@@ -63,7 +63,7 @@ export default class Server {
             // Unirme al juego
             socket.unirmeAlJuego(cliente, this.io);
             // Unirme al juego
-            socket.comienzaElJuego(cliente, this.io);
+            socket.testing(cliente, this.io);
         });
     }
 

@@ -1,13 +1,13 @@
 import { Request, Response } from 'express';
 import { router as app } from './router';
-import { DevicesLista } from '../classes/devices-lista';
 import { Devices } from '../models/devices.model';
 import { Users } from '../models/users.model';
 import { usuariosConectados } from '../sockets/socket';
-import socketIO from 'socket.io';
 import Server from '../classes/server';
-
-const devicesLista = new DevicesLista();
+import { Locations } from '../models/locations.model';
+import { Snapshots } from '../models/snapshots.model';
+import { Sequelize } from 'sequelize';
+import sequelize from '../database/database';
 
 app.get('/emit/lat/:lat/lon/:lon/token/:token', async (req: Request, res: Response) => {
 
@@ -15,7 +15,7 @@ app.get('/emit/lat/:lat/lon/:lon/token/:token', async (req: Request, res: Respon
     const lon = req.params.lon;
     const token = req.params.token;
 
-    const informacion = await Devices.findOne({
+    const device = await Devices.findOne({
         where: { token: token },
         attributes: { exclude: ['userId'] },
         include: [
@@ -25,7 +25,7 @@ app.get('/emit/lat/:lat/lon/:lon/token/:token', async (req: Request, res: Respon
         ]
     });
 
-    const idUsuario: number = informacion?.getDataValue('user').getDataValue('id');
+    const idUsuario: number = device?.getDataValue('user').getDataValue('id');
     const idSocket = usuariosConectados.verIdDeSocket(idUsuario);
 
     const server = Server.instance;
@@ -36,8 +36,18 @@ app.get('/emit/lat/:lat/lon/:lon/token/:token', async (req: Request, res: Respon
         token,
     });
 
+    // Aqui comienzan
+    const t = await sequelize.transaction();
+
+    try {
+        // Aqui su codigo
+    } catch (error) {
+        t.rollback();
+    }
+
+
     res.json({
-        ok: informacion,
+        ok: true,
     });
 
 });

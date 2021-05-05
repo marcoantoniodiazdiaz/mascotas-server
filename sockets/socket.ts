@@ -18,8 +18,8 @@ export const conectarCliente = (cliente: Socket, io: socketIO.Server) => {
     });
 
     const usuario = new Usuario(cliente.id);
-    io.emit('usuarios-activos', usuariosConectados.getLista());
     usuariosConectados.agregar(usuario);
+    io.emit('usuarios-activos', usuariosConectados.getLista());
 }
 
 export const desconectar = (cliente: Socket, io: socketIO.Server) => {
@@ -60,10 +60,12 @@ export const crearSala = (cliente: Socket, io: socketIO.Server) => {
     });
 }
 
-// Comenzar juego
-export const comienzaElJuego = (cliente: Socket, io: socketIO.Server) => {
-    cliente.on('comienza-juego', (payload: { sala: string }) => {
-        startGame(payload.sala, io);
+// Testing
+export const testing = (cliente: Socket, io: socketIO.Server) => {
+    cliente.on('testing', () => {
+        io.to(cliente.id).emit('escuche', {
+            message: 'Te escuche'
+        });
     });
 }
 
