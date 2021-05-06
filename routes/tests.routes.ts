@@ -24,7 +24,7 @@ app.get('/emit/lat/:lat/lon/:lon/token/:token', async (req: Request, res: Respon
             }
         ]
     });
-
+    //console.log("device",device);
     const idUsuario: number = device?.getDataValue('user').getDataValue('id');
     const idSocket = usuariosConectados.verIdDeSocket(idUsuario);
 
@@ -38,17 +38,36 @@ app.get('/emit/lat/:lat/lon/:lon/token/:token', async (req: Request, res: Respon
 
     // Aqui comienzan
     const t = await sequelize.transaction();
-
     try {
         // Aqui su codigo
+        const location = await Locations.create({
+            latitude: lat,
+            longitude: lon,            
+        }, {transaction: t});
+        console.log("id location "+location.getDataValue('id'));
+        console.log("id device"+device?.getDataValue('id'))
+        const snapshot = await Snapshots.create({
+            locationId:  location.getDataValue('id'),
+            deviceId: device?.getDataValue('id'),
+           
+        }, { transaction: t });
+        await t.commit();
+        // Todo salio bien
+        res.json({
+            ok: true,
+            location:location,
+            snpa:snapshot
+
+        });
     } catch (error) {
+        res.json({
+            ok: false
+        });
         t.rollback();
     }
 
 
-    res.json({
-        ok: true,
-    });
+
 
 });
 
