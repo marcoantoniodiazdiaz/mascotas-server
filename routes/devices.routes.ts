@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { router as app } from './router';
 import { Devices } from '../models/devices.model';
 import { Users } from '../models/users.model';
+import Tags from '../models/tags.model';
 
 app.get('/devices', (req: Request, res: Response) => {
     Devices.findAll({
@@ -22,10 +23,10 @@ app.get('/devices', (req: Request, res: Response) => {
 
 });
 
-//Obtener dispositivo por usuario
-app.get('/devices/:userID', (req: Request, res: Response) => {
+// Obtener dispositivo por usuario
+app.get('/devices/user/:user', (req: Request, res: Response) => {
 
-    let userID = req.params.userID;
+    let user = req.params.user;
 
     Devices.findAll({
         include: [
@@ -35,11 +36,16 @@ app.get('/devices/:userID', (req: Request, res: Response) => {
                     exclude: ['password'],
                 }
             },
-            
+            {
+                model: Tags,
+                attributes: {
+                    exclude: ['deviceId'],
+                }
+            }
         ],
         attributes: {
             exclude: ['userId']
-        },where:{userId: userID}
+        }, where: { userId: user }
     })
         .then((data) => res.json({ ok: true, data })
         ).catch((err) => res.status(400).json({ ok: false, err, }));
@@ -53,8 +59,9 @@ app.post('/devices', (req: Request, res: Response) => {
 
     Devices.create({
         token: body.token,
+        name: body.name,
         userId: body.userId,
-    }).then((data) => res.json ({ ok: true, data })
+    }).then((data) => res.json({ ok: true, data })
     ).catch((err) => res.status(400).json({ ok: false, err, }));
 
 });
@@ -63,12 +70,12 @@ app.post('/devices', (req: Request, res: Response) => {
 
 
 //Borrar dispositivo
-app.delete('/devices/:ide',(req: Request, res: Response) => {
+app.delete('/devices/:ide', (req: Request, res: Response) => {
     let ide = req.params.ide;
 
     Devices.destroy({ where: { id: ide } })
-    .then((data) => res.json({ ok: true, data })
-    ).catch((err)=>res.status(400).json({ ok: false, err, }));
-    });
+        .then((data) => res.json({ ok: true, data })
+        ).catch((err) => res.status(400).json({ ok: false, err, }));
+});
 
 export default app;

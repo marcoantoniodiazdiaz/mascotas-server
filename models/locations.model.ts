@@ -22,3 +22,5 @@ Locations.init({
 }, {
     sequelize, modelName: "locations",
 });
+
+export default Locations;

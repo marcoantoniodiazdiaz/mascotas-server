@@ -10,3 +10,5 @@ Snapshots.init({
 }, {
     sequelize, modelName: "snapshots",
 });
+
+export default Snapshots;

@@ -6,7 +6,6 @@ import { usuariosConectados } from '../sockets/socket';
 import Server from '../classes/server';
 import { Locations } from '../models/locations.model';
 import { Snapshots } from '../models/snapshots.model';
-import { Sequelize } from 'sequelize';
 import sequelize from '../database/database';
 
 app.get('/emit/lat/:lat/lon/:lon/token/:token', async (req: Request, res: Response) => {
@@ -28,11 +27,18 @@ app.get('/emit/lat/:lat/lon/:lon/token/:token', async (req: Request, res: Respon
     const idUsuario: number = device?.getDataValue('user').getDataValue('id');
     const idSocket = usuariosConectados.verIdDeSocket(idUsuario);
 
+    console.log(idSocket);
+
     const server = Server.instance;
 
+    // server.io.emit('reenviando-localizacion', {
+    //     latitude: +lat,
+    //     longitude: +lon,
+    //     token,
+    // });
     server.io.to(idSocket!).emit('reenviando-localizacion', {
-        lat,
-        lon,
+        latitude: +lat,
+        longitude: +lon,
         token,
     });
 
@@ -42,22 +48,18 @@ app.get('/emit/lat/:lat/lon/:lon/token/:token', async (req: Request, res: Respon
         // Aqui su codigo
         const location = await Locations.create({
             latitude: lat,
-            longitude: lon,            
-        }, {transaction: t});
-        console.log("id location "+location.getDataValue('id'));
-        console.log("id device"+device?.getDataValue('id'))
+            longitude: lon,
+        }, { transaction: t });
         const snapshot = await Snapshots.create({
-            locationId:  location.getDataValue('id'),
+            locationId: location.getDataValue('id'),
             deviceId: device?.getDataValue('id'),
-           
+
         }, { transaction: t });
         await t.commit();
         // Todo salio bien
         res.json({
             ok: true,
-            location:location,
-            snpa:snapshot
-
+            data: snapshot,
         });
     } catch (error) {
         res.json({
@@ -65,10 +67,6 @@ app.get('/emit/lat/:lat/lon/:lon/token/:token', async (req: Request, res: Respon
         });
         t.rollback();
     }
-
-
-
-
 });
 
 export default app;

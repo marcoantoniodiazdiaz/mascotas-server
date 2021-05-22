@@ -64,7 +64,7 @@ export class SalasLista {
             console.log(e.usuario + " reconectado exitosamente a " + e.sala);
         });
 
-        console.log(this.usuariosEnSala);
+        // console.log(this.usuariosEnSala);
     }
 
 

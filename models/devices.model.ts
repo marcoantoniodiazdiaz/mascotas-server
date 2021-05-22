@@ -10,6 +10,12 @@ Devices.init({
         type: DataTypes.STRING,
         allowNull: false,
     },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
 }, {
     sequelize, modelName: "devices",
 });
+
+export default Devices;
