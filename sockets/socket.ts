@@ -33,6 +33,7 @@ export const desconectar = (cliente: Socket, io: socketIO.Server) => {
 // Configurar usuario
 export const configurarUsuario = (cliente: Socket, io: socketIO.Server) => {
     cliente.on('configurar-usuario', (payload: { username: string, database: number }) => {
+        console.log(payload)
         usuariosConectados.actualizarNombre(cliente.id, payload.username, payload.database);
         console.log(usuariosConectados.getUsuario(cliente.id));
         salas.reeconectarASala(cliente);

@@ -1,4 +1,4 @@
-const { OAuth2Client } = require('google-auth-library');
+import { OAuth2Client } from 'google-auth-library';
 const client = new OAuth2Client('80547765690-kd7g6q5ui91mrt3m19vpdehkjeup7ufr.apps.googleusercontent.com');
 
 export const validarGoogleIDToken = async (token: string) => {
@@ -16,10 +16,10 @@ export const validarGoogleIDToken = async (token: string) => {
         // console.log(payload);
 
         return {
-            nick: payload.name,
-            username: payload.name,
-            picture: payload.picture,
-            email: payload.email,
+            nick: payload?.name,
+            username: payload?.name,
+            picture: payload?.picture,
+            email: payload?.email,
         }
     } catch (e) {
         // console.log(e)

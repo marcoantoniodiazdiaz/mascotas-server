@@ -8,7 +8,11 @@ import Users from '../models/users.model'
 
 app.post('/login', async (req: Request, res: Response) => {
 
+    
+
     let body = req.body;
+
+    console.log(body)
 
     if (body.password === '' || body.email === '') {
         return res.status(400).json({
